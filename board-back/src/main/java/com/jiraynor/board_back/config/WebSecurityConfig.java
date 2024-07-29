@@ -65,8 +65,8 @@ class FailedAuthenticationEntryPoint implements AuthenticationEntryPoint {
         // 응답 콘텐츠 타입을 JSON으로 설정
         response.setContentType("application/json");
         // HTTP 상태 코드를 403 (금지됨)으로 설정
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         // 응답 바디에 JSON 메시지 작성
-        response.getWriter().write("{\"code\": \"NP\", \"message\": \"Do not have permission.\"}");
+        response.getWriter().write("{\"code\": \"AF\", \"message\": \"Authorization Failed.\"}");
     }
 }

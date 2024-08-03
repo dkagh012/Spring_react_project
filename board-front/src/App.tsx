@@ -1,4 +1,3 @@
-import Footer from "layouts/Footer";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Main from "views/Main";

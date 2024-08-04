@@ -6,11 +6,50 @@ import React, {
   useEffect,
 } from "react";
 import "./style.css";
-import { useNavigate, useParams } from "react-router-dom";
-import { MAIN_PATH, SEARCH_PATH } from "constant";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  AUTH_PATH,
+  BOARD_PATH,
+  BOARD_DETAIL_PATH,
+  BOARD_WRITE_PATH,
+  BOARD_UPDATE_PATH,
+  MAIN_PATH,
+  SEARCH_PATH,
+  USER_PATH,
+} from "constant";
+import { useCookies } from "react-cookie";
+import { useBoardStore, useLoginUserStore } from "stores";
+import path from "path";
 
 // Header 컴포넌트 정의
 export default function Header() {
+  // 로그인 유저 상태
+  const { loginUser, setLoginUser, resetLoginUser } = useLoginUserStore();
+
+  // path 상태
+  const { pathname } = useLocation();
+
+  // cookie 상태
+  const [cookie, setCookie] = useCookies();
+
+  // 로그인 상태
+  const [isLogin, setLogin] = useState<boolean>(false);
+
+  // 인증 페이지 상태
+  const [isAuthPage, setAuthPage] = useState<boolean>(false);
+  // 메인 페이지 상태
+  const [isMainPage, setMainPage] = useState<boolean>(false);
+  // 검색 페이지 상태
+  const [isSearchPage, setSearchPage] = useState<boolean>(false);
+  // 게시물 상세 페이지 상태
+  const [isBoardDetailPage, setBoardDetailPage] = useState<boolean>(false);
+  // 게시물 작성 페이지 상태
+  const [isBoardWritePage, setBoardWritePage] = useState<boolean>(false);
+  // 게시물 수정 페이지 상태
+  const [isBoardUpdatePage, setBoardUpdatePage] = useState<boolean>(false);
+  // 유저 페이지 상태
+  const [isUserPage, setUserPage] = useState<boolean>(false);
+
   // 네비게이트 함수
   const navigate = useNavigate();
 
@@ -93,6 +132,95 @@ export default function Header() {
     );
   };
 
+  // 로그인 또는 마이페이지 버튼 컴포넌트
+  const MyPageButton = () => {
+    // userEmail path variable 상태
+    const { userEmail } = useParams();
+
+    const onMyPageButtonClickHandler = () => {
+      if (!loginUser) return;
+      const { email } = loginUser;
+      navigate(USER_PATH(email));
+    };
+    const onSignOutButtonClickHandler = () => {
+      resetLoginUser();
+      navigate(MAIN_PATH());
+    };
+    const onSignInButtonClickHandler = () => {
+      navigate(AUTH_PATH());
+    };
+    if (isLogin && userEmail === loginUser?.email)
+      // 마이페이지 버튼 컴포넌트 렌더링
+      return (
+        <div className="white-button" onClick={onMyPageButtonClickHandler}>
+          {"마이페이지"}
+        </div>
+      );
+    // 로그아웃 버튼 컴포넌트 렌더링
+    if (isLogin)
+      return (
+        <div className="white-button" onClick={onSignOutButtonClickHandler}>
+          {"로그아웃"}
+        </div>
+      );
+    // 로그인 버튼 컴포넌트 렌더링
+    return (
+      <div className="black-button" onClick={onSignInButtonClickHandler}>
+        {"로그인"}
+      </div>
+    );
+  };
+
+  // 업로드 버튼 컴포넌트
+  const UploadButton = () => {
+    // 게시물 상태
+    const { title, content, boardImageFileList, resetBoard } = useBoardStore();
+
+    // 업로드 버튼 클릭 이벤트 처리 함수
+    const onUploadButtonClickHandler = () => {};
+
+    // if (title && content)
+    //   return (
+    //     <div className="black-button" onClick={onUploadButtonClickHandler}>
+    //       {"업로드"}
+    //     </div>
+    //   );
+    return <div className="disable-button">{"업로드"}</div>;
+  };
+
+  // path가 변경될 때 마다 실행될 함수
+  useEffect(() => {
+    const isAuthPage = pathname.startsWith(AUTH_PATH()); // 경로가 AUTH_PATH()로 시작하면 인증 페이지임을 나타냅니다.
+    setAuthPage(isAuthPage); // isAuthPage 상태를 업데이트합니다.
+
+    const isMainPage = pathname === MAIN_PATH(); // 경로가 MAIN_PATH()와 일치하면 메인 페이지임을 나타냅니다.
+    setMainPage(isMainPage); // isMainPage 상태를 업데이트합니다.
+
+    const isSearchPage = pathname.startsWith(SEARCH_PATH("")); // 경로가 SEARCH_PATH('')로 시작하면 검색 페이지임을 나타냅니다.
+    setSearchPage(isSearchPage); // isSearchPage 상태를 업데이트합니다.
+
+    const isBoardDetailPage = pathname.startsWith(
+      BOARD_PATH() + "/" + BOARD_DETAIL_PATH("")
+    );
+    // 경로가 BOARD_PATH() + '/' + BOARD_DETAIL_PATH('')로 시작하면 게시판 상세 페이지임을 나타냅니다.
+    setBoardDetailPage(isBoardDetailPage); // isBoardDetailPage 상태를 업데이트합니다.
+
+    const isBoardWritePage = pathname.startsWith(
+      BOARD_PATH() + "/" + BOARD_WRITE_PATH()
+    );
+    // 경로가 BOARD_PATH() + '/' + BOARD_WRITE_PATH()로 시작하면 게시판 작성 페이지임을 나타냅니다.
+    setBoardWritePage(isBoardWritePage); // isBoardWritePage 상태를 업데이트합니다.
+
+    const isBoardUpdatePage = pathname.startsWith(
+      BOARD_PATH() + "/" + BOARD_UPDATE_PATH("")
+    );
+    // 경로가 BOARD_PATH() + '/' + BOARD_UPDATE_PATH('')로 시작하면 게시판 수정 페이지임을 나타냅니다.
+    setBoardUpdatePage(isBoardUpdatePage); // isBoardUpdatePage 상태를 업데이트합니다.
+
+    const isUserPage = pathname.startsWith(USER_PATH("")); // 경로가 USER_PATH('')로 시작하면 사용자 페이지임을 나타냅니다.
+    setUserPage(isUserPage); // isUserPage 상태를 업데이트합니다.
+  }, [pathname]); // pathname이 변경될 때마다 이 useEffect 훅이 실행됩니다.
+
   // Header 컴포넌트의 JSX 반환
   return (
     <div id="header">
@@ -104,7 +232,13 @@ export default function Header() {
           <div className="header-logo">{"Hoons Board"}</div>
         </div>
         <div className="header-right-box">
-          <SearchButton />
+          {(isAuthPage || isMainPage || isSearchPage || isBoardDetailPage) && (
+            <SearchButton />
+          )}
+          {(isMainPage || isSearchPage || isBoardDetailPage || isUserPage) && (
+            <MyPageButton />
+          )}
+          {(isBoardWritePage || isBoardUpdatePage) && <UploadButton />}
         </div>
       </div>
     </div>

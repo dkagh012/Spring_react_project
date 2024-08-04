@@ -28,7 +28,7 @@ public class JwtProvider {
         // JWT 빌드 및 생성
         String jwt = Jwts.builder()
             // ES256 알고리즘과 비밀키를 사용하여 서명
-            .signWith(SignatureAlgorithm.ES256, secretKey)
+            .signWith(SignatureAlgorithm.HS256, secretKey)
             // JWT 주체 설정 (이메일)
             .setSubject(email)
             // JWT 발행 시간 설정

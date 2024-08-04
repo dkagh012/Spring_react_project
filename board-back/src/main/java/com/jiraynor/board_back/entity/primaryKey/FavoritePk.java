@@ -1,5 +1,7 @@
 package com.jiraynor.board_back.entity.primaryKey;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 
 import lombok.AllArgsConstructor;
@@ -11,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FavoritePk {
+public class FavoritePk implements Serializable{
     @Column(name="user_email")
     private String userEmail;
     @Column(name="board_number")

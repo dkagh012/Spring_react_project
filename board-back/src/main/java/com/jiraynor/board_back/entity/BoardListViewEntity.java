@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Scalar.String;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

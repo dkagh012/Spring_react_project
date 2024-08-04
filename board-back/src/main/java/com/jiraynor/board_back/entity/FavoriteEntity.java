@@ -6,7 +6,6 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import com.jiraynor.board_back.entity.primaryKey.FavoritePk;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Scalar.String;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

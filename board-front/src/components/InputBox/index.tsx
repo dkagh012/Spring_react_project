@@ -15,7 +15,7 @@ interface Props {
   value: string; // 입력 필드의 값
   setValue: Dispatch<SetStateAction<string>>; // 입력 값을 업데이트하는 함수
   error: boolean; // 에러 상태를 나타내는 boolean 값
-  icon?: string; // 입력 필드의 아이콘 (선택 사항)
+  icon?: "eye-light-off-icon" | "eye-light-on-icon" | "expand-right-light-icon"; // 입력 필드의 아이콘 (선택 사항)
   onButtonClick?: () => void; // 버튼 클릭 이벤트 핸들러 (선택 사항)
   message?: string; // 입력 필드 아래에 표시할 메시지 (선택 사항)
   onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void; // 키다운 이벤트 핸들러 (선택 사항)
@@ -59,7 +59,7 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
         />
         {/* 아이콘 버튼 (선택 사항) */}
         {onButtonClick !== undefined && (
-          <div className="icon-button">
+          <div className="icon-button" onClick={onButtonClick}>
             {icon !== undefined && <div className={`icon${icon}`}></div>}
           </div>
         )}

@@ -1,8 +1,22 @@
-import React, { useState, KeyboardEvent, useRef } from "react";
+import React, { useState, KeyboardEvent, useRef, ChangeEvent } from "react";
 import "./style.css";
 import InputBox from "components/InputBox";
+import { SignInRequestDto } from "apis/request/auth";
+import { signInRequest } from "apis";
+import { SignInResponseDto } from "apis/response/auth";
+import { ResponseDto } from "apis/response";
+import { useCookies } from "react-cookie";
+import { MAIN_PATH } from "constant";
+import { useNavigate } from "react-router-dom";
 export default function Authentication() {
+  // 화면 상태
   const [view, setView] = useState<"sign-in" | "sign-up">("sign-in");
+
+  // 쿠키 상태
+  const [cookie, setCookie] = useCookies();
+
+  // 네비게이트 함수
+  const navigator = useNavigate();
 
   // sign in card 컴포넌트
   const SignInCard = () => {
@@ -28,8 +42,48 @@ export default function Authentication() {
     // 에러 상태
     const [error, setError] = useState<boolean>(false);
 
+    // sign in response 처리 함수
+    const signInResponse = (
+      responseBody: SignInResponseDto | ResponseDto | null
+    ) => {
+      if (!responseBody) {
+        alert("네트워크 이상입니다.");
+        return;
+      }
+      const { code } = responseBody;
+      if (code === "DBE") alert("데이터베이스 오류입니다.");
+      if (code === "SF" || code === "VF") setError(true);
+      if (code !== "SU") return;
+
+      const { token, expirationTime } = responseBody as SignInResponseDto;
+      const now = new Date().getTime();
+      const expires = new Date(now + expirationTime * 1000);
+
+      setCookie("accessToken", token, { expires, path: MAIN_PATH() });
+      navigator(MAIN_PATH());
+    };
+
+    // 이메일 변경 이벤트 처리
+    const onEmailChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      setError(false);
+      const { value } = event?.target;
+      setEmail(value);
+    };
+    // 비밀번호 변경 이벤트 처리
+    const onPasswordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      setError(false);
+      const { value } = event?.target;
+      setPassword(value);
+    };
+
     // 로그인 버튼 클릭 이벤트 처리
-    const onSignInButtonClickHandler = () => {};
+    const onSignInButtonClickHandler = () => {
+      const requestBody: SignInRequestDto = {
+        email,
+        password,
+      };
+      signInRequest(requestBody).then(signInResponse);
+    };
 
     // 회원가입 링크 클릭 이벤트 처리
     const onSignUpLinkClickHandler = () => {
@@ -76,7 +130,7 @@ export default function Authentication() {
               placeholder="이메일 주소를 입력해주세요."
               error={error}
               value={email}
-              setValue={setEmail}
+              onChange={onEmailChangeHandler}
               onKeyDown={onEmailKeyDownHandler}
             />
             <InputBox
@@ -86,7 +140,7 @@ export default function Authentication() {
               placeholder="비밀번호를 입력해주세요."
               error={error}
               value={password}
-              setValue={setPassword}
+              onChange={onPasswordChangeHandler}
               icon={passwordButtonIcon}
               onButtonClick={onPasswordButtonClickHandler}
               onKeyDown={onPasswordKeyDownHandler}

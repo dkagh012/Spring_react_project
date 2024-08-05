@@ -1,10 +1,4 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  KeyboardEvent,
-  forwardRef,
-  SetStateAction,
-} from "react";
+import { ChangeEvent, KeyboardEvent, forwardRef } from "react";
 import "./style.css";
 
 // Props 인터페이스 정의, InputBox 컴포넌트가 받을 props의 타입을 명시
@@ -13,7 +7,7 @@ interface Props {
   type: "text" | "password"; // 입력 필드의 타입 (텍스트 또는 비밀번호)
   placeholder: string; // 입력 필드의 플레이스홀더 텍스트
   value: string; // 입력 필드의 값
-  setValue: Dispatch<SetStateAction<string>>; // 입력 값을 업데이트하는 함수
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   error: boolean; // 에러 상태를 나타내는 boolean 값
   icon?: "eye-light-off-icon" | "eye-light-on-icon" | "expand-right-light-icon"; // 입력 필드의 아이콘 (선택 사항)
   onButtonClick?: () => void; // 버튼 클릭 이벤트 핸들러 (선택 사항)
@@ -25,13 +19,7 @@ interface Props {
 const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
   // props를 구조 분해 할당하여 쉽게 접근
   const { label, type, placeholder, value, error, icon, message } = props;
-  const { setValue, onButtonClick, onKeyDown } = props;
-
-  // 입력 필드의 변경 이벤트를 처리하는 함수
-  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setValue(value); // 전달된 setValue 함수를 사용하여 값을 업데이트
-  };
+  const { onChange, onButtonClick, onKeyDown } = props;
 
   // 키다운 이벤트를 처리하는 함수
   const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -54,7 +42,7 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
           className="input"
           placeholder={placeholder} // 플레이스홀더 텍스트
           value={value} // 입력 값
-          onChange={onChangeHandler} // 변경 이벤트 핸들러
+          onChange={onChange} // 변경 이벤트 핸들러
           onKeyDown={onKeyDownHandler} // 키다운 이벤트 핸들러
         />
         {/* 아이콘 버튼 (선택 사항) */}

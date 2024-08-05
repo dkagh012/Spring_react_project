@@ -18,10 +18,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.jiraynor.board_back.provider.JwtProvider;
 
-import org.springframework.util.StringUtils; // 변경된 임포트
+import org.springframework.util.StringUtils; // 유틸리티 클래스 임포트
 import lombok.RequiredArgsConstructor;
 
+// 이 클래스를 Spring Bean으로 등록
 @Component
+// Lombok 애노테이션을 사용하여 final 필드에 대한 생성자를 자동으로 생성
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     

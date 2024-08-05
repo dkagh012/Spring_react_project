@@ -21,9 +21,12 @@ import com.jiraynor.board_back.filter.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
 
-@Configuration // 스프링 설정 클래스를 나타냄
-@EnableWebSecurity // 웹 보안 활성화
-@RequiredArgsConstructor // 생성자를 통한 의존성 주입
+// 스프링 설정 클래스를 나타내는 애노테이션
+@Configuration
+// Spring Security 설정을 활성화하는 애노테이션
+@EnableWebSecurity
+// 생성자를 통한 의존성 주입을 자동으로 생성해주는 Lombok 애노테이션
+@RequiredArgsConstructor
 public class WebSecurityConfig {
 
     // JwtAuthenticationFilter 의존성 주입
@@ -64,7 +67,7 @@ class FailedAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         // 응답 콘텐츠 타입을 JSON으로 설정
         response.setContentType("application/json");
-        // HTTP 상태 코드를 403 (금지됨)으로 설정
+        // HTTP 상태 코드를 401 (Unauthorized)으로 설정
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         // 응답 바디에 JSON 메시지 작성
         response.getWriter().write("{\"code\": \"AF\", \"message\": \"Authorization Failed.\"}");

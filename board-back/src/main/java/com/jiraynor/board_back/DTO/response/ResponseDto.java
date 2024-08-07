@@ -31,4 +31,12 @@ public class ResponseDto {
         // HTTP 상태 코드 500(INTERNAL_SERVER_ERROR)와 함께 응답 본문에 responseBody 객체를 담아 반환
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
     }
+    public static ResponseEntity<ResponseDto> validationFailed(){
+                ResponseDto responseBody = new ResponseDto(
+                    ResponseCode.VALIDATION_FAILED,  
+                    ResponseMessage.VALIDATION_FAILED 
+                );
+        
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    }
 }

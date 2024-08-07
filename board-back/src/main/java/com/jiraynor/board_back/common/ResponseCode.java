@@ -7,7 +7,7 @@ public interface ResponseCode {
     String SUCCESS = "SU";
 
     // HTTP Status 400: 클라이언트의 잘못된 요청을 나타냄
-    String VALIDATION_FAILED = "VE"; // 유효성 검증 실패
+    String VALIDATION_FAILED = "VF"; // 유효성 검증 실패
     String DUPLICATE_EMAIL = "DE"; // 중복된 이메일
     String DUPLICATE_NICKNAME = "DN"; // 중복된 닉네임
     String DUPLICATE_TEL_NUMBER = "DT"; // 중복된 전화번호

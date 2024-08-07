@@ -28,6 +28,7 @@ export default function Authentication() {
     // 이메일 상태
     const [email, setEmail] = useState<string>("");
     // 패스워드 상태
+
     const [password, setPassword] = useState<string>("");
     // 패스워드 타입 상태
     const [passwordType, setPasswordType] = useState<"text" | "password">(
@@ -51,6 +52,8 @@ export default function Authentication() {
         return;
       }
       const { code } = responseBody;
+      console.log(code);
+
       if (code === "DBE") alert("데이터베이스 오류입니다.");
       if (code === "SF" || code === "VF") setError(true);
       if (code !== "SU") return;

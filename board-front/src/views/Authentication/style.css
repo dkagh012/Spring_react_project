@@ -77,9 +77,19 @@
   gap: 40px;
 }
 .auth-card-title-box {
+  display: flex;
+  justify-content: space-between;
+}
+.auth-card-title {
   color: rgba(0, 0, 0, 1);
   font-size: 24px;
-  font-weight: 500;
+  font-weight: 600;
+  line-height: 140%;
+}
+.auth-card-page {
+  color: rgba(0, 0, 0, 1);
+  font-size: 24px;
+  font-weight: 600;
   line-height: 140%;
 }
 

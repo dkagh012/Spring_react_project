@@ -48,7 +48,9 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
         {/* 아이콘 버튼 (선택 사항) */}
         {onButtonClick !== undefined && (
           <div className="icon-button" onClick={onButtonClick}>
-            {icon !== undefined && <div className={`icon${icon}`}></div>}
+            {icon !== undefined && (
+              <div className={`icon-button ${icon}`}></div>
+            )}
           </div>
         )}
       </div>

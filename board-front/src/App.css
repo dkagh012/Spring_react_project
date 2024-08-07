@@ -80,6 +80,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  background-size: cover;
 }
 
 .icon-button:hover {
@@ -114,6 +115,12 @@
 }
 .logo-dark-icon {
   background-image: url(assets/image/logo-dark.png);
+}
+.search-light-icon {
+  background-image: url(assets/image/search-light.png);
+}
+.search-light-icon {
+  background-image: url(assets/image/search-light.png);
 }
 .search-light-icon {
   background-image: url(assets/image/search-light.png);

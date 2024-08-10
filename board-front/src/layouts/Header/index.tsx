@@ -144,6 +144,7 @@ export default function Header() {
     };
     const onSignOutButtonClickHandler = () => {
       resetLoginUser();
+      setCookie("accessToken", "", { path: MAIN_PATH(), expires: new Date() });
       navigate(MAIN_PATH());
     };
     const onSignInButtonClickHandler = () => {
@@ -221,6 +222,11 @@ export default function Header() {
     setUserPage(isUserPage); // isUserPage 상태를 업데이트합니다.
   }, [pathname]); // pathname이 변경될 때마다 이 useEffect 훅이 실행됩니다.
 
+  //login user가 변경 될때 마다 실행될 함수
+
+  useEffect(() => {
+    setLogin(loginUser !== null);
+  }, [loginUser]);
   // Header 컴포넌트의 JSX 반환
   return (
     <div id="header">

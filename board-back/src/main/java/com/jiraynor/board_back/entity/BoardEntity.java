@@ -85,4 +85,11 @@ public class BoardEntity {
     public void increaseViewCount(){
         this.viewCount++;
     }
+
+    public void increaseFavoriteCount(){
+        this.favoriteCount++;
+    }
+    public void decreaseFavoriteCount(){
+        this.favoriteCount--;
+    }
 }

@@ -1,5 +1,6 @@
 package com.jiraynor.board_back.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -25,11 +26,11 @@ import lombok.NoArgsConstructor;
 @IdClass(FavoritePk.class)
 public class FavoriteEntity {
 
-    // 복합 기본 키의 첫 번째 필드인 사용자 이메일
     @Id
+    @Column(name = "user_email")  // 데이터베이스 컬럼 이름과 매핑
     private String userEmail;
 
-    // 복합 기본 키의 두 번째 필드인 게시판 번호
     @Id
+    @Column(name = "board_number")  // 데이터베이스 컬럼 이름과 매핑
     private int boardNumber;
 }

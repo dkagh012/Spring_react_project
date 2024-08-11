@@ -81,4 +81,8 @@ public class BoardEntity {
         // 작성자의 이메일을 필드에 설정합니다.
         this.writerEmail = email;
     }
+
+    public void increaseViewCount(){
+        this.viewCount++;
+    }
 }

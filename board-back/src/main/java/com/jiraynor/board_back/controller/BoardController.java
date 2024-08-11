@@ -17,6 +17,7 @@ import com.jiraynor.board_back.DTO.request.board.PostBoardRequestDto;
 import com.jiraynor.board_back.DTO.response.board.PostBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PutFavoriteResponseDto;
+import com.jiraynor.board_back.DTO.response.board.GetFavoriteListResponseDto;
 import com.jiraynor.board_back.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,14 @@ public class BoardController {
     @PathVariable("boardNumber") Integer boardNumber
     ){
         ResponseEntity<? super GetBoardResponseDto> response = boardService.getBoard(boardNumber);
+        return response;
+    }
+
+    @GetMapping("/{boardNumber}/favorite-list")
+    public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(
+        @PathVariable("boardNumber") Integer boardNumber
+    ){
+        ResponseEntity<? super GetFavoriteListResponseDto> response = boardService.getFavoriteList(boardNumber);
         return response;
     }
 

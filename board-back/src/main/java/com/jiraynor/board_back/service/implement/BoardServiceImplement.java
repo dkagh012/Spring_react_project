@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import com.jiraynor.board_back.DTO.request.board.PostBoardRequestDto;
 import com.jiraynor.board_back.DTO.response.ResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetBoardResponseDto;
+import com.jiraynor.board_back.DTO.response.board.GetFavoriteListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PostBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PutFavoriteResponseDto;
 import com.jiraynor.board_back.entity.BoardEntity;
@@ -19,6 +20,7 @@ import com.jiraynor.board_back.repository.FavoriteRepository;
 import com.jiraynor.board_back.repository.ImageRepository;
 import com.jiraynor.board_back.repository.UserRepository;
 import com.jiraynor.board_back.repository.resultSet.GetBoardResultSet;
+import com.jiraynor.board_back.repository.resultSet.GetFavoriteListResultSet;
 import com.jiraynor.board_back.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -55,6 +57,27 @@ public class BoardServiceImplement implements BoardService {
         }
         return GetBoardResponseDto.success(resultSet,imageEntities);
     }
+
+    @Override
+    public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(Integer boardNumber) {
+        
+        List<GetFavoriteListResultSet> resultSets = new ArrayList<>();
+
+        try{
+            boolean existedBoard = boardRepository.existsByBoardNumber(boardNumber);
+            if (!existedBoard) return GetFavoriteListResponseDto.noExistBoard();
+
+            resultSets = favoriteRepository.getFavoriteList(boardNumber);
+
+        }catch(Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetFavoriteListResponseDto.success(resultSets);
+
+    }
+
+
 
     // 게시물을 생성하고 저장하는 메서드입니다.
     @Override
@@ -121,5 +144,6 @@ public class BoardServiceImplement implements BoardService {
         }
         return PutFavoriteResponseDto.success();
     }
+
 
 }

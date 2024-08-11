@@ -32,4 +32,9 @@ public class ImageEntity {
 
     // 이미지 경로 또는 URL
     private String image;
+
+    public ImageEntity(int boardNumber, String image){
+        this.boardNumber = boardNumber;
+        this.image = image;
+    }
 }

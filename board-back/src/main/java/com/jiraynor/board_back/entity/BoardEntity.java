@@ -6,6 +6,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import java.util.Date;
+import java.time.Instant;
+import java.text.SimpleDateFormat;
+
+import com.jiraynor.board_back.DTO.request.board.PostBoardRequestDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,24 +33,52 @@ public class BoardEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int boardNumber;
     
-    // 게시글 제목
+    // 게시글 제목을 나타내는 필드입니다.
     private String title;
     
-    // 게시글 내용
+    // 게시글 내용을 나타내는 필드입니다.
     private String content;
     
-    // 작성 시간
+    // 작성 시간을 문자열 형식으로 저장하는 필드입니다.
     private String writeDatetime;
     
-    // 즐겨찾기 수
+    // 게시글의 즐겨찾기 수를 나타내는 필드입니다.
     private int favoriteCount;
     
-    // 댓글 수
+    // 게시글의 댓글 수를 나타내는 필드입니다.
     private int commentCount;
     
-    // 조회수
+    // 게시글의 조회수를 나타내는 필드입니다.
     private int viewCount;
     
-    // 작성자 이메일
+    // 작성자의 이메일을 나타내는 필드입니다.
     private String writerEmail;
+
+    // PostBoardRequestDto 객체와 작성자의 이메일을 이용하여 새로운 게시글 엔티티를 생성하는 생성자입니다.
+    public BoardEntity(PostBoardRequestDto dto, String email){
+        
+        // 현재 시간을 가져와 Date 객체로 변환합니다.
+        Date now = Date.from(Instant.now());
+        
+        // 날짜와 시간을 "yyyy-MM-dd HH:mm:ss" 형식으로 포맷팅하기 위한 SimpleDateFormat 객체를 생성합니다.
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        // 현재 시간을 포맷팅하여 문자열로 변환합니다.
+        String writeDatetime= simpleDateFormat.format(now);
+        
+        // DTO에서 제목과 내용을 가져와 필드에 설정합니다.
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        
+        // 포맷팅된 작성 시간을 필드에 설정합니다.
+        this.writeDatetime = writeDatetime;
+        
+        // 기본값으로 초기화하는 필드들입니다. 즐겨찾기 수, 댓글 수, 조회수는 모두 0으로 설정합니다.
+        this.favoriteCount = 0;
+        this.commentCount = 0;
+        this.viewCount = 0;
+        
+        // 작성자의 이메일을 필드에 설정합니다.
+        this.writerEmail = email;
+    }
 }

@@ -10,6 +10,7 @@ import com.jiraynor.board_back.DTO.request.board.PostBoardRequestDto;
 import com.jiraynor.board_back.DTO.request.board.PostCommentRequestDto;
 import com.jiraynor.board_back.DTO.response.ResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetBoardResponseDto;
+import com.jiraynor.board_back.DTO.response.board.GetCommentListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetFavoriteListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PostBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PostCommentResponseDto;
@@ -24,6 +25,7 @@ import com.jiraynor.board_back.repository.FavoriteRepository;
 import com.jiraynor.board_back.repository.ImageRepository;
 import com.jiraynor.board_back.repository.UserRepository;
 import com.jiraynor.board_back.repository.resultSet.GetBoardResultSet;
+import com.jiraynor.board_back.repository.resultSet.GetCommentListResultSet;
 import com.jiraynor.board_back.repository.resultSet.GetFavoriteListResultSet;
 import com.jiraynor.board_back.service.BoardService;
 
@@ -82,7 +84,25 @@ public class BoardServiceImplement implements BoardService {
 
     }
 
+    @Override
+    public ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer boardNumber) {
+        
+        List<GetCommentListResultSet> resultSets = new ArrayList<>();
+        
+        try{
 
+            boolean existedBoard = boardRepository.existsByBoardNumber(boardNumber);
+            if (!existedBoard) return GetCommentListResponseDto.noExistBoard();
+            
+            resultSets = commentRepository.getCommentList(boardNumber);
+
+        }catch(Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetCommentListResponseDto.success(resultSets);
+    }
 
     // 게시물을 생성하고 저장하는 메서드입니다.
     @Override
@@ -173,6 +193,7 @@ public class BoardServiceImplement implements BoardService {
         }
         return PutFavoriteResponseDto.success();
     }
+
 
 
 

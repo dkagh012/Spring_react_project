@@ -47,9 +47,14 @@ public class CommentEntity {
 
     public CommentEntity(PostCommentRequestDto dto,Integer boardNumber , String email){
         
+        // 현재 시간을 가져와 Date 객체로 변환합니다.
         Date now = Date.from(Instant.now());
+        
+        // 날짜와 시간을 "yyyy-MM-dd HH:mm:ss" 형식으로 포맷팅하기 위한 SimpleDateFormat 객체를 생성합니다.
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String writeDatetime = simpleDateFormat.format(now);
+
+        // 현재 시간을 포맷팅하여 문자열로 변환합니다.
+        String writeDatetime= simpleDateFormat.format(now);
 
         
         this.content = dto.getContent();    

@@ -6,6 +6,7 @@ import com.jiraynor.board_back.DTO.request.board.PostBoardRequestDto;
 import com.jiraynor.board_back.DTO.request.board.PostCommentRequestDto;
 import com.jiraynor.board_back.DTO.response.board.GetBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetFavoriteListResponseDto;
+import com.jiraynor.board_back.DTO.response.board.GetCommentListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PutFavoriteResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PostCommentResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PostBoardResponseDto;
@@ -16,7 +17,7 @@ public interface BoardService {
 
     ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber);
     ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(Integer boardNumber);
-
+    ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer boardNumber);
     // 게시물을 생성하는 메서드입니다.
     // 게시물 생성 요청 데이터와 사용자의 이메일을 매개변수로 받아 처리합니다.
     // 게시물 생성 결과를 포함하는 ResponseEntity를 반환합니다.

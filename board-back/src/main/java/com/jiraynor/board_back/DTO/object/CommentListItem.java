@@ -1,8 +1,13 @@
 package com.jiraynor.board_back.DTO.object;
 
+import com.jiraynor.board_back.repository.resultSet.GetCommentListResultSet;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // Lombok 애노테이션을 사용하여 getter 메서드를 자동으로 생성합니다.
 @Getter
@@ -20,4 +25,20 @@ public class CommentListItem {
     private String writeDatetime;
     // 댓글 내용
     private String content;
+
+    public CommentListItem(GetCommentListResultSet resultSet){
+        this.nickname = resultSet.getNickname();
+        this.profileImage = resultSet.getProfileImage();
+        this.writeDatetime = resultSet.getWriteDatetime();
+        this.content = resultSet.getContent();
+    }
+
+    public static List<CommentListItem> copyList(List<GetCommentListResultSet> resultSets){
+        List<CommentListItem> list = new ArrayList<>();
+        for (GetCommentListResultSet resultSet : resultSets) {
+            CommentListItem commentListItem = new CommentListItem(resultSet);
+            list.add(commentListItem);
+        }
+        return list;
+    }
 }

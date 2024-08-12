@@ -6,6 +6,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+
+import com.jiraynor.board_back.DTO.request.board.PostCommentRequestDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,4 +44,17 @@ public class CommentEntity {
 
     // 해당 댓글이 속한 게시판 번호
     private int boardNumber;
+
+    public CommentEntity(PostCommentRequestDto dto,Integer boardNumber , String email){
+        
+        Date now = Date.from(Instant.now());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String writeDatetime = simpleDateFormat.format(now);
+
+        
+        this.content = dto.getContent();    
+        this.writeDatetime = writeDatetime;
+        this.userEmail = email;
+        this.boardNumber = boardNumber;
+    }
 }

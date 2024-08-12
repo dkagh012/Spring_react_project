@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jiraynor.board_back.DTO.request.board.PostBoardRequestDto;
+import com.jiraynor.board_back.DTO.request.board.PostCommentRequestDto;
 import com.jiraynor.board_back.DTO.response.board.PostBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PutFavoriteResponseDto;
+import com.jiraynor.board_back.DTO.response.board.PostCommentResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetFavoriteListResponseDto;
 import com.jiraynor.board_back.service.BoardService;
 
@@ -56,6 +58,16 @@ public class BoardController {
         // BoardService의 postBoard 메서드를 호출하여 게시물을 생성하고 응답을 반환합니다.
         ResponseEntity<? super PostBoardResponseDto> response = boardService.postBoard(requestBody, email);
         return response; // 최종 응답을 클라이언트에게 반환합니다.
+    }
+
+    @PostMapping("/{boardNumber}/comment")
+    public ResponseEntity<? super PostCommentResponseDto> postComment(
+        @RequestBody @Valid PostCommentRequestDto requestBody,
+        @PathVariable() Integer boardNumber,
+        @AuthenticationPrincipal String email
+    ){
+        ResponseEntity<? super PostCommentResponseDto> response = boardService.postComment(requestBody, boardNumber, email);
+        return response;
     }
 
     @PutMapping("/{boardNumber}/favorite")

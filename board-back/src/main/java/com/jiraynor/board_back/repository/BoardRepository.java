@@ -16,7 +16,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
     @Query(
         value = 
         "SELECT "  +
-        "B.board_number AS board_number, " +
+        "B.board_number AS boardNumber, " +
         "B.title AS title, " +
         "B.content AS content, " +
         "B.write_datetime AS writerDatetime, " +

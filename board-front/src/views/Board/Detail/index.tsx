@@ -34,9 +34,7 @@ export default function BoardDetail() {
     const getBoardResponse = (
       responseBody: GetBoardResponseDto | ResponseDto | null
     ) => {
-      if (!responseBody) return;
-      console.log(responseBody);
-      const { code } = responseBody;
+      const code = (responseBody as any).data || responseBody;
 
       console.log(code);
       if (code === "NB") alert("존재하지 않는 게시물입니다");
@@ -76,6 +74,8 @@ export default function BoardDetail() {
         navigator(MAIN_PATH());
         return;
       }
+      console.log(boardNumber);
+
       getBoardRequest(boardNumber).then(getBoardResponse);
     }, [boardNumber]);
     // 게시물 상세 상단 컴포넌트 랜더링

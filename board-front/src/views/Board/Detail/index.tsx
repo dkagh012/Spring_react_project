@@ -11,20 +11,28 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useLoginUserStore } from "stores";
 import { BOARD_PATH, BOARD_UPDATE_PATH, MAIN_PATH, USER_PATH } from "constant";
 import {
+  deleteBoardRequest,
   getBoardRequest,
   getCommentListRequest,
   getFavoriteListRequest,
   increaseViewCountRequest,
+  postCommentRequest,
+  putFavoriteRequest,
 } from "apis";
 import GetBoardResponseDto from "apis/response/board/get-board.response.dto";
 import { ResponseDto } from "apis/response";
 import {
+  DeleteBoardResponseDto,
   GetCommentListResponseDto,
   GetFavoriteListResponseDto,
   IncreaseViewCountResponseDto,
+  PostCommentResponseDto,
+  PutFavoriteResponseDto,
 } from "apis/response/board";
 
 import dayjs from "dayjs";
+import { useCookies } from "react-cookie";
+import { PostCommentRequestDto } from "apis/request/board";
 
 export default function BoardDetail() {
   // 게시물 번호 path variable 상태
@@ -32,6 +40,9 @@ export default function BoardDetail() {
 
   // 로그인 유지 상태
   const { loginUser } = useLoginUserStore();
+
+  // 쿠키 상태
+  const [cookies, setCookies] = useCookies();
 
   // 네비게이트 함수
   const navigator = useNavigate();
@@ -88,6 +99,23 @@ export default function BoardDetail() {
       const isWriter = loginUser.email === board.writerEmail;
       setWriter(isWriter);
     };
+
+    const deleteBoardResponse = (
+      responseBody: DeleteBoardResponseDto | ResponseDto | null
+    ) => {
+      if (!responseBody) return;
+      const { code } = responseBody;
+      if (code === "VF") alert("잘못된 접근입니다.");
+      if (code === "NU") alert("존재하지 않는 유저입니다.");
+      if (code === "NB") alert("존재하지 않는 게시물입니다.");
+      if (code === "AF") alert("인증에 실패했습니다.");
+      if (code === "NP") alert("권한이 없습니다.");
+      if (code === "DBE") alert("데이터베이스 오류입니다.");
+      if (code !== "SU") return;
+
+      navigator(MAIN_PATH());
+    };
+
     // 닉네임 클릭 이벤트 처리
     const onNicknameClickHandler = () => {
       if (!board) return;
@@ -104,10 +132,12 @@ export default function BoardDetail() {
       navigator(BOARD_PATH() + "/" + BOARD_UPDATE_PATH(board.boardNumber));
     };
     const onDeleteButtonClickHandler = () => {
-      if (!board || !loginUser) return;
+      if (!board || !loginUser || !boardNumber || !cookies.accessToken) return;
       if (loginUser.email !== board.writerEmail) return;
-      // TODO : Delete Request
-      navigator(MAIN_PATH());
+
+      deleteBoardRequest(boardNumber, cookies.accessToken).then(
+        deleteBoardResponse
+      );
     };
 
     useEffect(() => {
@@ -240,9 +270,47 @@ export default function BoardDetail() {
       setCommentList(commentList);
     };
 
+    // put favorite response 처리 함수
+    const putFavoriteResponse = (
+      responseBody: PutFavoriteResponseDto | ResponseDto | null
+    ) => {
+      if (!responseBody) return;
+      const { code } = responseBody;
+      if (code === "VF") alert("잘못된 접근입니다.");
+      if (code === "NU") alert("존재하지 않는 유저입니다.");
+      if (code === "NB") alert("존재하지 않는 게시물입니다.");
+      if (code === "AF") alert("인증이 실패했습니다.");
+      if (code === "DBE") alert("데이터베이스 오류입니다.");
+      if (code !== "SU") return;
+
+      if (!boardNumber) return;
+      getFavoriteListRequest(boardNumber).then(getFavoriteListResponse);
+    };
+
+    const postCommentResponse = (
+      responseBody: PostCommentResponseDto | ResponseDto | null
+    ) => {
+      if (!responseBody) return;
+      const { code } = responseBody;
+      if (code === "VF") alert("잘못된 접근입니다.");
+      if (code === "NU") alert("존재하지 않는 유저입니다.");
+      if (code === "NB") alert("존재하지 않는 게시물입니다.");
+      if (code === "AF") alert("인증이 실패했습니다.");
+      if (code === "DBE") alert("데이터베이스 오류입니다.");
+      if (code !== "SU") return;
+
+      setComment("");
+
+      if (!boardNumber) return;
+      getCommentListRequest(boardNumber).then(getCommentListResponse);
+    };
+
     // 좋아요 클릭 이벤트 처리
     const onFavoriteClickHandler = () => {
-      setFavorite(!isFavorite);
+      if (!boardNumber || !loginUser || !cookies.accessToken) return;
+      putFavoriteRequest(boardNumber, cookies.accessToken).then(
+        putFavoriteResponse
+      );
     };
     // 좋아요 상자 보기 클릭 이벤트 처리
     const onShowFavoriteClickHandler = () => {
@@ -253,7 +321,15 @@ export default function BoardDetail() {
       setShowComment(!showComment);
     };
     // 댓글 작성 버튼 클릭 이벤트 처리
-    const onCommentSubmitButtonClickHandler = () => {};
+    const onCommentSubmitButtonClickHandler = () => {
+      if (!comment || !boardNumber || !loginUser || !cookies.accessToken)
+        return;
+
+      const requestBody: PostCommentRequestDto = { content: comment };
+      postCommentRequest(boardNumber, requestBody, cookies.accessToken).then(
+        postCommentResponse
+      );
+    };
     // 댓글 변경 이벤트 처리
     const onCommentChangeHandler = (
       event: ChangeEvent<HTMLTextAreaElement>

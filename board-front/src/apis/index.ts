@@ -3,13 +3,16 @@ import { SignInRequestDto, SignUpRequestDto } from "./request/auth";
 import { SignInResponseDto, SignUpResponseDto } from "./response/auth";
 import { ResponseDto } from "./response";
 import { GetSignInUserResponseDto } from "./response/user";
-import { PostBoardRequestDto } from "./request/board";
+import { PostBoardRequestDto, PostCommentRequestDto } from "./request/board";
 import {
   PostBoardResponseDto,
   GetBoardResponseDto,
   IncreaseViewCountResponseDto,
   GetFavoriteListResponseDto,
   GetCommentListResponseDto,
+  PutFavoriteResponseDto,
+  PostCommentResponseDto,
+  DeleteBoardResponseDto,
 } from "./response/board";
 import { error } from "console";
 
@@ -76,6 +79,12 @@ const GET_FAVORITE_LIST_URL = (boardNumber: number | string) =>
   `${API_DOMAIN}/board/${boardNumber}/favorite-list`;
 const GET_COMMENT_LIST_URL = (boardNumber: number | string) =>
   `${API_DOMAIN}/board/${boardNumber}/comment-list`;
+const PUT_FAVORITE_URL = (boardNumber: number | string) =>
+  `${API_DOMAIN}/board/${boardNumber}/favorite`;
+const POST_COMMENT_URL = (boardNumber: number | string) =>
+  `${API_DOMAIN}/board/${boardNumber}/comment`;
+const DELETE_BOARD_URL = (boardNumber: number | string) =>
+  `${API_DOMAIN}/board/${boardNumber}`;
 export const getBoardRequest = async (boardNumber: number | string) => {
   const result = await axios
     .get(GET_BOARD_URL(boardNumber))
@@ -147,6 +156,65 @@ export const postBoardRequest = async (
     .post(POST_BOARD_URL(), requestBody, authorization(accessToken)) // 게시물 생성 엔드포인트로 POST 요청을 보냅니다.
     .then((response) => {
       const responseBody: PostBoardResponseDto = response.data; // 응답 데이터를 PostBoardResponseDto로 변환합니다.
+      return responseBody;
+    })
+    .catch((error) => {
+      if (!error.response) return null; // 오류 응답이 없는 경우 null을 반환합니다.
+      const responseBody: ResponseDto = error.response.data; // 오류 응답 데이터를 ResponseDto로 변환합니다.
+      return responseBody;
+    });
+  return result; // 최종 결과를 반환합니다.
+};
+
+export const postCommentRequest = async (
+  boardNumber: number | string,
+  requestBody: PostCommentRequestDto,
+  accessToken: string
+) => {
+  const result = await axios
+    .post(
+      POST_COMMENT_URL(boardNumber),
+      requestBody,
+      authorization(accessToken)
+    )
+    .then((response) => {
+      const responseBody: PostCommentResponseDto = response.data; // 응답 데이터를 GetSignInUserResponseDto로 변환합니다.
+      return responseBody;
+    })
+    .catch((error) => {
+      if (!error.response) return null; // 오류 응답이 없는 경우 null을 반환합니다.
+      const responseBody: ResponseDto = error.response.data; // 오류 응답 데이터를 ResponseDto로 변환합니다.
+      return responseBody;
+    });
+  return result;
+};
+
+export const putFavoriteRequest = async (
+  boardNumber: number | string,
+  accessToken: string
+) => {
+  const result = await axios
+    .put(PUT_FAVORITE_URL(boardNumber), {}, authorization(accessToken))
+    .then((response) => {
+      const responseBody: PutFavoriteResponseDto = response.data; // 응답 데이터를 GetSignInUserResponseDto로 변환합니다.
+      return responseBody;
+    })
+    .catch((error) => {
+      if (!error.response) return null; // 오류 응답이 없는 경우 null을 반환합니다.
+      const responseBody: ResponseDto = error.response.data; // 오류 응답 데이터를 ResponseDto로 변환합니다.
+      return responseBody;
+    });
+  return result;
+};
+
+export const deleteBoardRequest = async (
+  boardNumber: number | string,
+  accessToken: string
+) => {
+  const result = await axios
+    .delete(DELETE_BOARD_URL(boardNumber), authorization(accessToken))
+    .then((response) => {
+      const responseBody: DeleteBoardResponseDto = response.data; // 응답 데이터를 GetSignInUserResponseDto로 변환합니다.
       return responseBody;
     })
     .catch((error) => {

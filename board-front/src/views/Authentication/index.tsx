@@ -59,7 +59,6 @@ export default function Authentication() {
         return;
       }
       const { code } = responseBody;
-      console.log(code);
 
       if (code === "DBE") alert("데이터베이스 오류입니다.");
       if (code === "SF" || code === "VF") setError(true);

@@ -33,6 +33,7 @@ import {
 import dayjs from "dayjs";
 import { useCookies } from "react-cookie";
 import { PostCommentRequestDto } from "apis/request/board";
+import { usePagination } from "hooks";
 
 export default function BoardDetail() {
   // 게시물 번호 path variable 상태
@@ -53,7 +54,6 @@ export default function BoardDetail() {
   ) => {
     if (!responseBody) return;
     const { code } = responseBody;
-    console.log(code);
 
     if (code === "NB") alert("존재하지 않는 게시물입니다.");
     if (code === "DBE") alert("데이터베이스 오류 입니다.");
@@ -218,18 +218,31 @@ export default function BoardDetail() {
     // 댓글 textarea 장소 상태
     const commentRef = useRef<HTMLTextAreaElement | null>(null);
 
+    // 페이지 네이션 관련 상태
+    const {
+      currentPage, // 현재 페이지 번호
+      setCurrentPage, // 현재 페이지 번호를 설정하는 함수
+      currentSection, // 현재 섹션 번호
+      setCurrentSection, // 현재 섹션 번호를 설정하는 함수
+      viewList, // 현재 페이지에 보여줄 객체 리스트
+      viewPageList, // 현재 섹션에 보여줄 페이지 리스트
+      totalSection, // 전체 섹션 수
+      setTotalList, // 전체 객체 리스트를 설정하는 함수
+    } = usePagination<CommentListItem>(3);
+
     // 좋아요 리스트 상태
     const [favoriteList, setFavoriteList] = useState<FavoriteListItem[]>([]);
-    // 댓글 리스트 상태
-    const [commentList, setCommentList] = useState<CommentListItem[]>([]);
     // 좋아요 상태
     const [isFavorite, setFavorite] = useState<boolean>(false);
     // 좋아요 상자 보기 상태
     const [showFavorite, setShowFavorite] = useState<boolean>(false);
+    // 전체 댓글 개수 상태
+    const [totalCommentCount, setTotalCommentCount] = useState<number>(0);
+
+    // 댓글 상태
+    const [comment, setComment] = useState<string>("");
     // 댓글 상자 보기 상태
     const [showComment, setShowComment] = useState<boolean>(false);
-    // 댓글 상자 보기 상태
-    const [comment, setComment] = useState<string>("");
 
     // get favorite list response 처리 함수
     const getFavoriteListResponse = (
@@ -267,7 +280,8 @@ export default function BoardDetail() {
       if (code !== "SU") return;
 
       const { commentList } = responseBody as GetCommentListResponseDto;
-      setCommentList(commentList);
+      setTotalList(commentList);
+      setTotalCommentCount(commentList.length);
     };
 
     // put favorite response 처리 함수
@@ -376,7 +390,7 @@ export default function BoardDetail() {
               <div className="icon comment-icon"></div>
             </div>
             <div className="board-detail-bottom-button-text">
-              <div>{`댓글  ${commentList.length}`}</div>
+              <div>{`댓글  ${totalCommentCount}`}</div>
             </div>
             <div className="icon-button" onClick={onShowCommentClickHandler}>
               {showComment ? (
@@ -407,17 +421,24 @@ export default function BoardDetail() {
             <div className="board-detail-bottom-comment-container">
               <div className="board-detail-bottom-comment-title">
                 {"댓글"}
-                <span className="emphasis">{commentList.length}</span>
+                <span className="emphasis">{totalCommentCount}</span>
               </div>
               <div className="board-detail-bottom-comment-list-container">
-                {commentList.map((item) => (
+                {viewList.map((item) => (
                   <CommentItem commentListItem={item} />
                 ))}
               </div>
             </div>
             <div className="divider"></div>
             <div className="board-detail-bottom-comment-pagination-box">
-              <Pagination />
+              <Pagination
+                currentPage={currentPage}
+                currentSection={currentSection}
+                SetCurrentPage={setCurrentPage}
+                SetCurrentSection={setCurrentSection}
+                viewPageList={viewPageList}
+                totalSection={totalSection}
+              />
             </div>
             {loginUser !== null && (
               <div className="board-detail-bottom-comment-input-box">

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.jiraynor.board_back.DTO.request.board.PatchBoardRequestDto;
 import com.jiraynor.board_back.DTO.request.board.PostBoardRequestDto;
 import com.jiraynor.board_back.DTO.request.board.PostCommentRequestDto;
 import com.jiraynor.board_back.DTO.response.ResponseDto;
@@ -14,6 +15,7 @@ import com.jiraynor.board_back.DTO.response.board.GetBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetCommentListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetFavoriteListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.IncreaseViewCountResponseDto;
+import com.jiraynor.board_back.DTO.response.board.PatchBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PostBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PostCommentResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PutFavoriteResponseDto;
@@ -191,6 +193,44 @@ public class BoardServiceImplement implements BoardService {
         }
         return PutFavoriteResponseDto.success();
     }
+
+    @Override
+    public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber,
+            String email) {
+
+                try{
+
+                    BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+                    if(boardEntity == null) return PatchBoardResponseDto.noExistBoard();
+
+                    boolean existedUser = userRepository.existsByEmail(email);
+                    if(!existedUser) return PatchBoardResponseDto.noExistUser();
+
+                    String writerEmail = boardEntity.getWriterEmail();
+                    boolean isWriter = writerEmail.equals(email);
+                    if(!isWriter) return PatchBoardResponseDto.noPermission();
+
+                    boardEntity.patchBoard(dto);
+                    boardRepository.save(boardEntity);
+
+                    imageRepository.deleteByBoardNumber(boardNumber);
+                    List<String> boardImageList = dto.getBoardImageList();
+                    List<ImageEntity> imageEntities = new ArrayList();
+
+                    for (String image: boardImageList){
+                        ImageEntity imageEntity = new ImageEntity(boardNumber , image);
+                        imageEntities.add(imageEntity);
+                    }
+
+                    imageRepository.saveAll(imageEntities);
+
+                }catch(Exception exception){
+                    exception.printStackTrace();
+                    return ResponseDto.databaseError();
+                }
+                return PatchBoardResponseDto.success();
+    }
+
 
     @Override
     public ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(Integer boardNumber) {

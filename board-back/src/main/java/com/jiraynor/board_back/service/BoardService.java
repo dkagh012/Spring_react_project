@@ -2,6 +2,7 @@ package com.jiraynor.board_back.service;
 
 import org.springframework.http.ResponseEntity;
 
+import com.jiraynor.board_back.DTO.request.board.PatchBoardRequestDto;
 import com.jiraynor.board_back.DTO.request.board.PostBoardRequestDto;
 import com.jiraynor.board_back.DTO.request.board.PostCommentRequestDto;
 import com.jiraynor.board_back.DTO.response.board.DeleteBoardResponseDto;
@@ -11,6 +12,7 @@ import com.jiraynor.board_back.DTO.response.board.GetCommentListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PutFavoriteResponseDto;
 import com.jiraynor.board_back.DTO.response.board.IncreaseViewCountResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PostCommentResponseDto;
+import com.jiraynor.board_back.DTO.response.board.PatchBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PostBoardResponseDto;
 
 // 게시물 관련 기능을 정의하는 인터페이스입니다.
@@ -32,4 +34,6 @@ public interface BoardService {
     ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(Integer boardNumber);
 
     ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber , String email);
+
+    ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto , Integer boardNumber , String email);
 }

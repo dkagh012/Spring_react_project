@@ -10,6 +10,7 @@ import java.util.Date;
 import java.time.Instant;
 import java.text.SimpleDateFormat;
 
+import com.jiraynor.board_back.DTO.request.board.PatchBoardRequestDto;
 import com.jiraynor.board_back.DTO.request.board.PostBoardRequestDto;
 
 import lombok.AllArgsConstructor;
@@ -95,5 +96,10 @@ public class BoardEntity {
     }
     public void decreaseFavoriteCount(){
         this.favoriteCount--;
+    }
+
+    public void patchBoard(PatchBoardRequestDto dto) {
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
     }
 }

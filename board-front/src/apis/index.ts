@@ -3,7 +3,11 @@ import { SignInRequestDto, SignUpRequestDto } from "./request/auth";
 import { SignInResponseDto, SignUpResponseDto } from "./response/auth";
 import { ResponseDto } from "./response";
 import { GetSignInUserResponseDto } from "./response/user";
-import { PostBoardRequestDto, PostCommentRequestDto } from "./request/board";
+import {
+  PatchBoardRequestDto,
+  PostBoardRequestDto,
+  PostCommentRequestDto,
+} from "./request/board";
 import {
   PostBoardResponseDto,
   GetBoardResponseDto,
@@ -13,6 +17,7 @@ import {
   PutFavoriteResponseDto,
   PostCommentResponseDto,
   DeleteBoardResponseDto,
+  PatchBoardResponseDto,
 } from "./response/board";
 import { error } from "console";
 
@@ -84,6 +89,8 @@ const PUT_FAVORITE_URL = (boardNumber: number | string) =>
 const POST_COMMENT_URL = (boardNumber: number | string) =>
   `${API_DOMAIN}/board/${boardNumber}/comment`;
 const DELETE_BOARD_URL = (boardNumber: number | string) =>
+  `${API_DOMAIN}/board/${boardNumber}`;
+const PATCH_BOARD_URL = (boardNumber: number | string) =>
   `${API_DOMAIN}/board/${boardNumber}`;
 export const getBoardRequest = async (boardNumber: number | string) => {
   const result = await axios
@@ -179,6 +186,29 @@ export const postCommentRequest = async (
     )
     .then((response) => {
       const responseBody: PostCommentResponseDto = response.data; // 응답 데이터를 GetSignInUserResponseDto로 변환합니다.
+      return responseBody;
+    })
+    .catch((error) => {
+      if (!error.response) return null; // 오류 응답이 없는 경우 null을 반환합니다.
+      const responseBody: ResponseDto = error.response.data; // 오류 응답 데이터를 ResponseDto로 변환합니다.
+      return responseBody;
+    });
+  return result;
+};
+
+export const patchBoardRequest = async (
+  boardNumber: number | string,
+  requestBody: PatchBoardRequestDto,
+  accessToken: string
+) => {
+  const result = await axios
+    .patch(
+      PATCH_BOARD_URL(boardNumber),
+      requestBody,
+      authorization(accessToken)
+    )
+    .then((response) => {
+      const responseBody: PatchBoardResponseDto = response.data; // 응답 데이터를 GetSignInUserResponseDto로 변환합니다.
       return responseBody;
     })
     .catch((error) => {

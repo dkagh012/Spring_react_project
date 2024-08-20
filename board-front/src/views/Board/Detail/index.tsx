@@ -46,7 +46,7 @@ export default function BoardDetail() {
   const [cookies, setCookies] = useCookies();
 
   // 네비게이트 함수
-  const navigator = useNavigate();
+  const navigate = useNavigate();
 
   // increase view count response 처리 함수
   const increaseViewCountResponse = (
@@ -85,7 +85,7 @@ export default function BoardDetail() {
       if (code === "NB") alert("존재하지 않는 게시물입니다");
       if (code === "DBE") alert("데이터베이스 오류입니다.");
       if (code !== "SU") {
-        navigator(MAIN_PATH());
+        navigate(MAIN_PATH());
         return;
       }
 
@@ -113,13 +113,13 @@ export default function BoardDetail() {
       if (code === "DBE") alert("데이터베이스 오류입니다.");
       if (code !== "SU") return;
 
-      navigator(MAIN_PATH());
+      navigate(MAIN_PATH());
     };
 
     // 닉네임 클릭 이벤트 처리
     const onNicknameClickHandler = () => {
       if (!board) return;
-      navigator(USER_PATH(board.writerEmail));
+      navigate(USER_PATH(board.writerEmail));
     };
 
     const onMoreButtonClickHandler = () => {
@@ -129,7 +129,7 @@ export default function BoardDetail() {
     const onUpdateButtonClickHandler = () => {
       if (!board || !loginUser) return;
       if (loginUser.email !== board.writerEmail) return;
-      navigator(BOARD_PATH() + "/" + BOARD_UPDATE_PATH(board.boardNumber));
+      navigate(BOARD_PATH() + "/" + BOARD_UPDATE_PATH(board.boardNumber));
     };
     const onDeleteButtonClickHandler = () => {
       if (!board || !loginUser || !boardNumber || !cookies.accessToken) return;
@@ -142,7 +142,7 @@ export default function BoardDetail() {
 
     useEffect(() => {
       if (!boardNumber) {
-        navigator(MAIN_PATH());
+        navigate(MAIN_PATH());
         return;
       }
 
@@ -204,7 +204,7 @@ export default function BoardDetail() {
         </div>
         <div className="divider"></div>
         <div className="board-detail-top-main">
-          <div className="board-detail-main-text">{board?.content};</div>
+          <div className="board-detail-main-text">{board?.content}</div>
 
           {board?.boardImageList.map((image) => (
             <img className="board-detail-main-image" src={image} />

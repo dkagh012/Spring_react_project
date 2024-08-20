@@ -6,6 +6,7 @@ import GetFavoriteListResponseDto from "./get-favorite-list.response.dto";
 import GetCommentListResponseDto from "./get-comment-list.response.dto";
 import PutFavoriteResponseDto from "./put-favorite.response.dto";
 import PostCommentResponseDto from "./post-comment.response.dto";
+import PatchBoardResponseDto from "./patch-board.response.dto";
 import DeleteBoardResponseDto from "./delete-board.response.dto";
 // PostBoardResponseDto 타입을 다른 파일에서 사용할 수 있도록 내보냅니다.
 export type {
@@ -17,4 +18,5 @@ export type {
   DeleteBoardResponseDto,
   IncreaseViewCountResponseDto,
   PutFavoriteResponseDto,
+  PatchBoardResponseDto,
 };

@@ -12,10 +12,10 @@ export default function Top3Item({ top3ListItem }: Props) {
   const { favoriteCount, commentCount, viewCount } = top3ListItem;
   const { writeDatetime, writerNickname, writerProfileImage } = top3ListItem;
 
-  // const navigator = useNavigate();
+  // const navigate = useNavigate();
 
   const onClickHandler = () => {
-    // navigator(boardNumber)
+    // navigate(boardNumber)
   };
 
   return (

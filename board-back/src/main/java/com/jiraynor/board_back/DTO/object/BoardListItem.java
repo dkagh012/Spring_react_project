@@ -1,5 +1,10 @@
 package com.jiraynor.board_back.DTO.object;
 
+import com.jiraynor.board_back.entity.BoardListViewEntity;
+
+import java.util.List;
+import java.util.ArrayList;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,4 +37,37 @@ public class BoardListItem {
     private String writerNickname;
     // 작성자 프로필 이미지
     private String writerProfileImage;
+
+    public BoardListItem(BoardListViewEntity boardListViewEntity){
+            // 게시판 번호
+      this.boardNumber = boardListViewEntity.getBoardNumber();
+    // 게시글 제목
+      this.title = boardListViewEntity.getTitle();
+    // 게시글 내용
+      this.content= boardListViewEntity.getContent();
+    // 게시글 타이틀 이미지
+      this.boardTitleImage= boardListViewEntity.getTitleImage();
+    // 즐겨찾기 수
+      this.favoriteCount= boardListViewEntity.getFavoriteCount();
+    // 댓글 수
+      this.commentCount= boardListViewEntity.getCommentCount();
+    // 조회수
+      this.viewCount= boardListViewEntity.getViewCount();
+    // 작성 시간
+      this.writeDatetime= boardListViewEntity.getWriteDatetime();
+    // 작성자 닉네임
+      this.writerNickname= boardListViewEntity.getWriterNickname();
+    // 작성자 프로필 이미지
+      this.writerProfileImage= boardListViewEntity.getWriterProfileImage();
+    }
+
+    public static List<BoardListItem> getList(List<BoardListViewEntity> boardListViewEntities){
+        List<BoardListItem> list = new ArrayList<>();
+        for(BoardListViewEntity boardListViewEntity: boardListViewEntities){
+            BoardListItem boardListItem = new BoardListItem(boardListViewEntity);
+            list.add(boardListItem);
+        }
+        return list;
+        
+    }
 }

@@ -12,6 +12,8 @@ import com.jiraynor.board_back.DTO.response.board.GetCommentListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PutFavoriteResponseDto;
 import com.jiraynor.board_back.DTO.response.board.IncreaseViewCountResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PostCommentResponseDto;
+import com.jiraynor.board_back.DTO.response.board.GetTop3BoardListResponseDto;
+import com.jiraynor.board_back.DTO.response.board.GetLatestBoardListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PatchBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PostBoardResponseDto;
 
@@ -36,4 +38,8 @@ public interface BoardService {
     ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber , String email);
 
     ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto , Integer boardNumber , String email);
+
+    ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList();
+
+    ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList();
 }

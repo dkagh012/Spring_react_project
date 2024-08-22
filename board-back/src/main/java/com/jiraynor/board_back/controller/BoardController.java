@@ -19,8 +19,10 @@ import com.jiraynor.board_back.DTO.request.board.PostBoardRequestDto;
 import com.jiraynor.board_back.DTO.request.board.PostCommentRequestDto;
 import com.jiraynor.board_back.DTO.response.board.PostBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetBoardResponseDto;
+import com.jiraynor.board_back.DTO.response.board.GetLatestBoardListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PatchBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetCommentListResponseDto;
+import com.jiraynor.board_back.DTO.response.board.GetTop3BoardListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.DeleteBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PutFavoriteResponseDto;
 import com.jiraynor.board_back.DTO.response.board.IncreaseViewCountResponseDto;
@@ -67,6 +69,18 @@ public class BoardController {
         @PathVariable("boardNumber") Integer boardNumber
     ){
         ResponseEntity<? super IncreaseViewCountResponseDto> response = boardService.increaseViewCount(boardNumber);
+        return response;
+    }
+
+    @GetMapping("/latest-list")
+    public ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList(){
+        ResponseEntity<? super GetLatestBoardListResponseDto> response = boardService.getLatestBoardList();
+        return response;
+    }
+
+    @GetMapping("/top-3")
+    public ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList(){
+        ResponseEntity<? super GetTop3BoardListResponseDto> response = boardService.getTop3BoardList();
         return response;
     }
 

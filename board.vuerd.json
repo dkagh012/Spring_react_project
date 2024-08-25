@@ -4,13 +4,13 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": 0,
-    "scrollLeft": -172,
+    "scrollTop": -256,
+    "scrollLeft": -758,
     "zoomLevel": 1,
     "show": 431,
     "database": 4,
     "databaseName": "",
-    "canvasType": "ERD",
+    "canvasType": "@dineug/erd-editor/builtin-schema-sql",
     "language": 1,
     "tableNameCase": 4,
     "columnNameCase": 2,
@@ -771,7 +771,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1723385927126,
+          "updateAt": 1724567465594,
           "createAt": 1723385927126
         }
       },
@@ -977,6 +977,14 @@
       -1,
       {
         "name": 1723387941829
+      }
+    ],
+    "8809c01e-cc14-4d54-94af-bc512472f550": [
+      "tableColumnEntities",
+      -1,
+      -1,
+      {
+        "name": 1724567465594
       }
     ]
   }

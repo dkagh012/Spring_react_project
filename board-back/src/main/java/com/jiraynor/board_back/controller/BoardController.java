@@ -2,6 +2,7 @@ package com.jiraynor.board_back.controller;
 
 import javax.validation.Valid;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,7 @@ import com.jiraynor.board_back.DTO.response.board.GetLatestBoardListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PatchBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetCommentListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetTop3BoardListResponseDto;
+import com.jiraynor.board_back.DTO.response.board.GetSearchBoardListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.DeleteBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PutFavoriteResponseDto;
 import com.jiraynor.board_back.DTO.response.board.IncreaseViewCountResponseDto;
@@ -81,6 +83,15 @@ public class BoardController {
     @GetMapping("/top-3")
     public ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList(){
         ResponseEntity<? super GetTop3BoardListResponseDto> response = boardService.getTop3BoardList();
+        return response;
+    }
+
+    @GetMapping(value = {"/search-list/{searchWord}","/search-list/{searchWord}/{preSearchWord}"})
+    public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(
+        @PathVariable("searchWord") String searchWord,
+        @PathVariable(value = "preSearchWord", required = false) String preSearchWord
+    ){
+        ResponseEntity<? super GetSearchBoardListResponseDto> response = boardService.getSearchBoardList(searchWord, searchWord);
         return response;
     }
 

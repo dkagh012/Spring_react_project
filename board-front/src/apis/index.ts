@@ -18,8 +18,11 @@ import {
   PostCommentResponseDto,
   DeleteBoardResponseDto,
   PatchBoardResponseDto,
+  GetLatestBoardListResponseDto,
+  GetTop3BoardListResponseDto,
 } from "./response/board";
 import { error } from "console";
+import { GetPopularListResponseDto } from "./response/search";
 
 // API 요청을 보낼 서버의 기본 도메인 URL입니다.
 const DOMAIN = "http://localhost:4000";
@@ -77,6 +80,10 @@ export const signUpRequest = async (requestBody: SignUpRequestDto) => {
 // 게시물 생성 엔드포인트 URL을 생성하는 함수입니다.
 const GET_BOARD_URL = (boardNumber: number | string) =>
   `${API_DOMAIN}/board/${boardNumber}`;
+
+const GET_LATEST_BOARD_LIST_URL = () => `${API_DOMAIN}/board/latest-list`;
+const GET_TOP_3_BOARD_LIST_URL = () => `${API_DOMAIN}/board/top-3`;
+
 const INCREASE_VIEW_COUNT_URL = (boardNumber: number | string) =>
   `${API_DOMAIN}/board/${boardNumber}/increase-view-count`;
 const POST_BOARD_URL = () => `${API_DOMAIN}/board`;
@@ -102,6 +109,37 @@ export const getBoardRequest = async (boardNumber: number | string) => {
     .catch((error) => {
       if (!error.response) return null;
       const responseBody: ResponseDto = error.response;
+      return responseBody;
+    });
+  return result;
+};
+
+export const getLatestBoardListRequest = async () => {
+  const result = await axios
+    .get(GET_LATEST_BOARD_LIST_URL())
+    .then((response) => {
+      const responseBody: GetLatestBoardListResponseDto = response.data;
+
+      return responseBody;
+    })
+    .catch((error) => {
+      if (!error.response) return null;
+      const responseBody: ResponseDto = error.response.data;
+      return responseBody;
+    });
+  return result;
+};
+export const getTop3BoardListRequest = async () => {
+  const result = await axios
+    .get(GET_TOP_3_BOARD_LIST_URL())
+    .then((response) => {
+      const responseBody: GetTop3BoardListResponseDto = response.data;
+
+      return responseBody;
+    })
+    .catch((error) => {
+      if (!error.response) return null;
+      const responseBody: ResponseDto = error.response.data;
       return responseBody;
     });
   return result;
@@ -253,6 +291,23 @@ export const deleteBoardRequest = async (
       return responseBody;
     });
   return result; // 최종 결과를 반환합니다.
+};
+
+const GET_POPULAR_LIST_URL = () => `${API_DOMAIN}/search/popular-list`;
+
+export const getPopularListRequest = async () => {
+  const result = await axios
+    .get(GET_POPULAR_LIST_URL())
+    .then((response) => {
+      const responseBody: GetPopularListResponseDto = response.data; // 응답 데이터를 GetSignInUserResponseDto로 변환합니다.
+      return responseBody;
+    })
+    .catch((error) => {
+      if (!error.response) return null; // 오류 응답이 없는 경우 null을 반환합니다.
+      const responseBody: ResponseDto = error.response.data; // 오류 응답 데이터를 ResponseDto로 변환합니다.
+      return responseBody;
+    });
+  return result;
 };
 
 // 현재 로그인된 사용자 정보를 가져오는 엔드포인트 URL을 생성하는 함수입니다.

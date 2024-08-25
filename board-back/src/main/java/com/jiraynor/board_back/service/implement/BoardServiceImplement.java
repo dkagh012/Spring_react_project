@@ -20,6 +20,7 @@ import com.jiraynor.board_back.DTO.response.board.GetBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetCommentListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetFavoriteListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetLatestBoardListResponseDto;
+import com.jiraynor.board_back.DTO.response.board.GetSearchBoardListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetTop3BoardListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.IncreaseViewCountResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PatchBoardResponseDto;
@@ -31,11 +32,13 @@ import com.jiraynor.board_back.entity.BoardListViewEntity;
 import com.jiraynor.board_back.entity.CommentEntity;
 import com.jiraynor.board_back.entity.FavoriteEntity;
 import com.jiraynor.board_back.entity.ImageEntity;
+import com.jiraynor.board_back.entity.SearchLogEntity;
 import com.jiraynor.board_back.repository.BoardListViewRepository;
 import com.jiraynor.board_back.repository.BoardRepository;
 import com.jiraynor.board_back.repository.CommentRepository;
 import com.jiraynor.board_back.repository.FavoriteRepository;
 import com.jiraynor.board_back.repository.ImageRepository;
+import com.jiraynor.board_back.repository.SearchLogRepository;
 import com.jiraynor.board_back.repository.UserRepository;
 import com.jiraynor.board_back.repository.resultSet.GetBoardResultSet;
 import com.jiraynor.board_back.repository.resultSet.GetCommentListResultSet;
@@ -56,6 +59,7 @@ public class BoardServiceImplement implements BoardService {
     private final ImageRepository imageRepository;
     private final FavoriteRepository favoriteRepository;
     private final CommentRepository commentRepository;
+    private final SearchLogRepository searchLogRepository;
     private final BoardListViewRepository boardListViewRepository;
 
     @Override
@@ -153,6 +157,35 @@ public class BoardServiceImplement implements BoardService {
         return GetTop3BoardListResponseDto.success(boardListViewEntities);
     
     }
+    
+    
+    @Override
+    public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(String searchWord,
+            String preSearchWord) {
+                List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+                try{
+
+                    boardListViewEntities = boardListViewRepository.findByTitleContainsOrContentContainsOrderByWriteDatetimeDesc(searchWord, preSearchWord);
+
+                    SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord,preSearchWord,false);
+                    searchLogRepository.save(searchLogEntity);
+
+                    boolean relation = preSearchWord != null;
+
+                    if(relation) {
+                        searchLogEntity = new SearchLogEntity(preSearchWord,searchWord,relation);
+                        searchLogRepository.save(searchLogEntity);
+                    }
+                    
+                }catch(Exception exception){
+                    exception.printStackTrace();
+                    return ResponseDto.databaseError();
+                }
+                return GetSearchBoardListResponseDto.success(boardListViewEntities);
+    }
+
+
+    
     // 게시물을 생성하고 저장하는 메서드입니다.
     @Override
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email) {
@@ -324,7 +357,6 @@ public class BoardServiceImplement implements BoardService {
             }
             return DeleteBoardResponseDto.success();
     }
-
 
 
 

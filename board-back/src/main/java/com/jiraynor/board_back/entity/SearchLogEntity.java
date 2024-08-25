@@ -35,4 +35,11 @@ public class SearchLogEntity {
 
     // 연관 검색어 여부
     private boolean relation;
+
+    public SearchLogEntity(String searchWord, String relationWord, boolean relation) {
+        this.searchWord = searchWord;
+        this.relationWord = relationWord;
+        this.relation = relation;
+    }
+    
 }

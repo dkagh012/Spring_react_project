@@ -1,7 +1,7 @@
 .top-3-list-item {
   padding: 24px;
-  width: calc(384px - 24px -24px);
-  height: calc(508px - 24px -24px);
+  width: calc(384px - 24px);
+  height: calc(508px - 24px);
   display: flex;
   flex-direction: column-reverse;
   background-color: rgba(0, 0, 0, 0.5);

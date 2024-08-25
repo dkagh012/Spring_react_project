@@ -2,6 +2,7 @@ import React from "react";
 import "./style.css";
 import { BoardListItem } from "types/interface";
 import DefaultProfileImage from "assets/image/default-profile-image.png";
+import { BOARD_DETAIL_PATH, BOARD_PATH } from "constant";
 import { useNavigate } from "react-router-dom";
 interface Props {
   top3ListItem: BoardListItem;
@@ -12,10 +13,10 @@ export default function Top3Item({ top3ListItem }: Props) {
   const { favoriteCount, commentCount, viewCount } = top3ListItem;
   const { writeDatetime, writerNickname, writerProfileImage } = top3ListItem;
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const onClickHandler = () => {
-    // navigate(boardNumber)
+    navigate(BOARD_PATH() + "/" + BOARD_DETAIL_PATH(boardNumber));
   };
 
   return (

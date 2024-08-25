@@ -1,3 +1,3 @@
 import GetPopularListResponseDto from "./get-popular-list.response.dto";
-
-export type { GetPopularListResponseDto };
+import GetRelationListResponseDto from "./get-relation-list.response.dto";
+export type { GetPopularListResponseDto, GetRelationListResponseDto };

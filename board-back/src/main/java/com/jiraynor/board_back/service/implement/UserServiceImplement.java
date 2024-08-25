@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.jiraynor.board_back.service.UserService;
 import com.jiraynor.board_back.DTO.response.ResponseDto;
 import com.jiraynor.board_back.DTO.response.user.GetSignInUserResponseDto;
+import com.jiraynor.board_back.DTO.response.user.GetUserResponseDto;
 import com.jiraynor.board_back.entity.UserEntity;
 import com.jiraynor.board_back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,26 @@ public class UserServiceImplement implements UserService {
 
     // UserRepository를 사용하기 위해 의존성 주입을 통해 인스턴스를 가져옵니다.
     private final UserRepository userRepository;
+
+
+    @Override
+    public ResponseEntity<? super GetUserResponseDto> getUser(String email) {
+
+        UserEntity userEntity = null;
+
+        try{
+
+            userEntity = userRepository.findByEmail(email);
+            if(userEntity == null) return GetUserResponseDto.noExistUser();
+
+        }catch(Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetUserResponseDto.success(userEntity);
+
+    }
+
 
     @Override
     public ResponseEntity<? super GetSignInUserResponseDto> getSignInUser(String email) {

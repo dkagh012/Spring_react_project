@@ -15,13 +15,14 @@ import com.jiraynor.board_back.DTO.response.board.PostCommentResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetTop3BoardListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetLatestBoardListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetSearchBoardListResponseDto;
+import com.jiraynor.board_back.DTO.response.board.GetUserBoardListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PatchBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PostBoardResponseDto;
 
 // 게시물 관련 기능을 정의하는 인터페이스입니다.
 public interface BoardService {
     
-
+    ResponseEntity<? super GetUserBoardListResponseDto> getUserBoardList(String email);
     ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber);
     ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(Integer boardNumber);
     ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer boardNumber);

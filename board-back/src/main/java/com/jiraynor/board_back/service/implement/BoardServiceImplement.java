@@ -22,6 +22,7 @@ import com.jiraynor.board_back.DTO.response.board.GetFavoriteListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetLatestBoardListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetSearchBoardListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.GetTop3BoardListResponseDto;
+import com.jiraynor.board_back.DTO.response.board.GetUserBoardListResponseDto;
 import com.jiraynor.board_back.DTO.response.board.IncreaseViewCountResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PatchBoardResponseDto;
 import com.jiraynor.board_back.DTO.response.board.PostBoardResponseDto;
@@ -184,6 +185,26 @@ public class BoardServiceImplement implements BoardService {
                 return GetSearchBoardListResponseDto.success(boardListViewEntities);
     }
 
+
+    @Override
+    public ResponseEntity<? super GetUserBoardListResponseDto> getUserBoardList(String email) {
+
+        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+
+        try{
+
+            boolean existedUser = userRepository.existsByEmail(email);
+            if(!existedUser) return GetUserBoardListResponseDto.noExistUser();
+
+            boardListViewEntities = boardListViewRepository.findByWriterEmailOrderByWriteDatetimeDesc(email);
+
+        }catch(Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+
+        }
+        return GetUserBoardListResponseDto.success(boardListViewEntities); 
+    }
 
     
     // 게시물을 생성하고 저장하는 메서드입니다.
@@ -357,9 +378,4 @@ public class BoardServiceImplement implements BoardService {
             }
             return DeleteBoardResponseDto.success();
     }
-
-
-
-
-
 }

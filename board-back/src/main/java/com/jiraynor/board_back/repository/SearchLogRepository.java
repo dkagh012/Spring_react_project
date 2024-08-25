@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.jiraynor.board_back.entity.SearchLogEntity;
 import com.jiraynor.board_back.repository.resultSet.GetPopularListResultSet;
+import com.jiraynor.board_back.repository.resultSet.GetRelationListResultSet;
 
 @Repository
 public interface SearchLogRepository extends JpaRepository<SearchLogEntity,Integer>{
@@ -24,5 +25,17 @@ public interface SearchLogRepository extends JpaRepository<SearchLogEntity,Integ
         nativeQuery = true
     )
     List<GetPopularListResultSet> getPopularList();
-    
+        @Query(
+        value = 
+        "SELECT relation_word as searchWord, count(relation_word) AS count " +
+        "FROM search_log " +
+        "WHERE search_word = ?1 " +
+        "AND relation_word IS NOT NULL " +
+        "GROUP BY relation_word " +
+        "ORDER BY count DESC " +
+        "LIMIT 15 ",
+        nativeQuery = true
+    )
+    List<GetRelationListResultSet> getRelationList(String searchWord);
+
 }

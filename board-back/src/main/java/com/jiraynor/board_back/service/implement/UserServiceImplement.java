@@ -4,9 +4,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.jiraynor.board_back.service.UserService;
+import com.jiraynor.board_back.DTO.request.user.PatchNicknameRequestDto;
+import com.jiraynor.board_back.DTO.request.user.PatchProfileImageRequestDto;
 import com.jiraynor.board_back.DTO.response.ResponseDto;
 import com.jiraynor.board_back.DTO.response.user.GetSignInUserResponseDto;
 import com.jiraynor.board_back.DTO.response.user.GetUserResponseDto;
+import com.jiraynor.board_back.DTO.response.user.PatchNicknameResponseDto;
+import com.jiraynor.board_back.DTO.response.user.PatchProfileImageResponseDto;
 import com.jiraynor.board_back.entity.UserEntity;
 import com.jiraynor.board_back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,4 +60,45 @@ public class UserServiceImplement implements UserService {
         // 사용자 정보 조회에 성공한 경우, 성공 응답을 반환합니다.
         return GetSignInUserResponseDto.success(userEntity);
     }
+
+    @Override
+    public ResponseEntity<? super PatchNicknameResponseDto> patchNickname(PatchNicknameRequestDto dto, String email) {
+        try {
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if (userEntity == null) return PatchNicknameResponseDto.noExistUser();
+    
+            String nickname = dto.getNickname();
+            boolean existedNickname = userRepository.existsByNickname(nickname);
+            if (existedNickname) return PatchNicknameResponseDto.duplicateNickname();
+    
+            userEntity.setNickname(nickname);
+            userRepository.save(userEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+    
+        return PatchNicknameResponseDto.success();
+    }
+    
+
+    @Override
+    public ResponseEntity<? super PatchProfileImageResponseDto> patchProfileImage(PatchProfileImageRequestDto dto, String email) {
+        try {
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if (userEntity == null) return PatchProfileImageResponseDto.noExistUser();
+    
+            String profileImage = dto.getProfileImage();
+            userEntity.setProfileImage(profileImage);
+            userRepository.save(userEntity);
+    
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+    
+        return PatchProfileImageResponseDto.success();
+    }
+    
 }

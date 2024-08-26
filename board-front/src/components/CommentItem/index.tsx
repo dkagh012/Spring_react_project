@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.css";
 import { CommentListItem } from "types/interface";
-import DefaultProfileImage from "assets/image/default-profile-image.png";
+import defaultProfileImage from "assets/image/default-profile-image.png";
 import dayjs from "dayjs";
 interface Props {
   commentListItem: CommentListItem;
@@ -34,7 +34,7 @@ export default function CommentItem({ commentListItem }: Props) {
             className="comment-list-item-profile-image"
             style={{
               backgroundImage: `url(${
-                profileImage ? profileImage : DefaultProfileImage
+                profileImage ? profileImage : defaultProfileImage
               })`,
             }}
           ></div>

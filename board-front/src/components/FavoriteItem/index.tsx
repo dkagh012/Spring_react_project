@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.css";
 import { FavoriteListItem } from "types/interface";
-import DefaultProfileImage from "assets/image/default-profile-image.png";
+import defaultProfileImage from "assets/image/default-profile-image.png";
 interface Props {
   favoriteListItem: FavoriteListItem;
 }
@@ -16,7 +16,7 @@ export default function FavoriteItem({ favoriteListItem }: Props) {
           className="favorite-list-item-profile-image"
           style={{
             backgroundImage: `url(${
-              profileImage ? profileImage : DefaultProfileImage
+              profileImage ? profileImage : defaultProfileImage
             })`,
           }}
         ></div>

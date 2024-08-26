@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.css";
 import { BoardListItem } from "types/interface";
-import DefaultProfileImage from "assets/image/default-profile-image.png";
+import defaultProfileImage from "assets/image/default-profile-image.png";
 import { useNavigate } from "react-router-dom";
 import { BOARD_DETAIL_PATH, BOARD_PATH } from "constant";
 interface Props {
@@ -34,7 +34,7 @@ export default function BoardItem({ boardListItem }: Props) {
               className="board-list-item-profile-image"
               style={{
                 backgroundImage: `url(${
-                  writerProfileImage ? writerProfileImage : DefaultProfileImage
+                  writerProfileImage ? writerProfileImage : defaultProfileImage
                 })`,
               }}
             ></div>

@@ -55,8 +55,14 @@ export default function BoardDetail() {
     if (!responseBody) return;
     const { code } = responseBody;
 
-    if (code === "NB") alert("존재하지 않는 게시물입니다.");
-    if (code === "DBE") alert("데이터베이스 오류 입니다.");
+    if (code === "NB") {
+      alert("존재하지 않는 게시물입니다.");
+      return; // 추가: alert 후 함수를 종료
+    }
+    if (code === "DBE") {
+      alert("데이터베이스 오류 입니다.");
+      return; // 추가: alert 후 함수를 종료
+    }
   };
 
   // 게시물 상세 상단 컴포넌트
@@ -82,8 +88,16 @@ export default function BoardDetail() {
 
       const code = data.code;
 
-      if (code === "NB") alert("존재하지 않는 게시물입니다");
-      if (code === "DBE") alert("데이터베이스 오류입니다.");
+      if (code === "NB") {
+        alert("존재하지 않는 게시물입니다");
+        navigate(MAIN_PATH());
+        return; // 추가: alert 후 함수를 종료
+      }
+      if (code === "DBE") {
+        alert("데이터베이스 오류입니다.");
+        navigate(MAIN_PATH());
+        return; // 추가: alert 후 함수를 종료
+      }
       if (code !== "SU") {
         navigate(MAIN_PATH());
         return;
@@ -105,12 +119,30 @@ export default function BoardDetail() {
     ) => {
       if (!responseBody) return;
       const { code } = responseBody;
-      if (code === "VF") alert("잘못된 접근입니다.");
-      if (code === "NU") alert("존재하지 않는 유저입니다.");
-      if (code === "NB") alert("존재하지 않는 게시물입니다.");
-      if (code === "AF") alert("인증에 실패했습니다.");
-      if (code === "NP") alert("권한이 없습니다.");
-      if (code === "DBE") alert("데이터베이스 오류입니다.");
+      if (code === "VF") {
+        alert("잘못된 접근입니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
+      if (code === "NU") {
+        alert("존재하지 않는 유저입니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
+      if (code === "NB") {
+        alert("존재하지 않는 게시물입니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
+      if (code === "AF") {
+        alert("인증에 실패했습니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
+      if (code === "NP") {
+        alert("권한이 없습니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
+      if (code === "DBE") {
+        alert("데이터베이스 오류입니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
       if (code !== "SU") return;
 
       navigate(MAIN_PATH());
@@ -250,8 +282,14 @@ export default function BoardDetail() {
     ) => {
       if (!responseBody) return;
       const { code } = responseBody;
-      if (code === "NB") alert("존재하지 않는 게시물 입니다.");
-      if (code === "DBE") alert("데이터베이스 오류입니다.");
+      if (code === "NB") {
+        alert("존재하지 않는 게시물 입니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
+      if (code === "DBE") {
+        alert("데이터베이스 오류입니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
       if (code !== "SU") return;
 
       const { favoriteList } = responseBody as GetFavoriteListResponseDto;
@@ -275,8 +313,14 @@ export default function BoardDetail() {
     ) => {
       if (!responseBody) return;
       const { code } = responseBody;
-      if (code === "NB") alert("존재하지 않는 게시물 입니다.");
-      if (code === "DBE") alert("데이터베이스 오류입니다.");
+      if (code === "NB") {
+        alert("존재하지 않는 게시물 입니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
+      if (code === "DBE") {
+        alert("데이터베이스 오류입니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
       if (code !== "SU") return;
 
       const { commentList } = responseBody as GetCommentListResponseDto;
@@ -290,11 +334,26 @@ export default function BoardDetail() {
     ) => {
       if (!responseBody) return;
       const { code } = responseBody;
-      if (code === "VF") alert("잘못된 접근입니다.");
-      if (code === "NU") alert("존재하지 않는 유저입니다.");
-      if (code === "NB") alert("존재하지 않는 게시물입니다.");
-      if (code === "AF") alert("인증이 실패했습니다.");
-      if (code === "DBE") alert("데이터베이스 오류입니다.");
+      if (code === "VF") {
+        alert("잘못된 접근입니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
+      if (code === "NU") {
+        alert("존재하지 않는 유저입니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
+      if (code === "NB") {
+        alert("존재하지 않는 게시물입니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
+      if (code === "AF") {
+        alert("인증이 실패했습니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
+      if (code === "DBE") {
+        alert("데이터베이스 오류입니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
       if (code !== "SU") return;
 
       if (!boardNumber) return;
@@ -306,11 +365,26 @@ export default function BoardDetail() {
     ) => {
       if (!responseBody) return;
       const { code } = responseBody;
-      if (code === "VF") alert("잘못된 접근입니다.");
-      if (code === "NU") alert("존재하지 않는 유저입니다.");
-      if (code === "NB") alert("존재하지 않는 게시물입니다.");
-      if (code === "AF") alert("인증이 실패했습니다.");
-      if (code === "DBE") alert("데이터베이스 오류입니다.");
+      if (code === "VF") {
+        alert("잘못된 접근입니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
+      if (code === "NU") {
+        alert("존재하지 않는 유저입니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
+      if (code === "NB") {
+        alert("존재하지 않는 게시물입니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
+      if (code === "AF") {
+        alert("인증이 실패했습니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
+      if (code === "DBE") {
+        alert("데이터베이스 오류입니다.");
+        return; // 추가: alert 후 함수를 종료
+      }
       if (code !== "SU") return;
 
       setComment("");

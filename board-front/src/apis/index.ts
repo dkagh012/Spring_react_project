@@ -2,7 +2,12 @@ import axios from "axios";
 import { SignInRequestDto, SignUpRequestDto } from "./request/auth";
 import { SignInResponseDto, SignUpResponseDto } from "./response/auth";
 import { ResponseDto } from "./response";
-import { GetSignInUserResponseDto } from "./response/user";
+import {
+  GetSignInUserResponseDto,
+  GetUserResponseDto,
+  PatchNicknameResponseDto,
+  PatchProfileImageResponseDto,
+} from "./response/user";
 import {
   PatchBoardRequestDto,
   PostBoardRequestDto,
@@ -21,12 +26,17 @@ import {
   GetLatestBoardListResponseDto,
   GetTop3BoardListResponseDto,
   GetSearchBoardListResponseDto,
+  GetUserBoardListResponseDto,
 } from "./response/board";
 import { error } from "console";
 import {
   GetPopularListResponseDto,
   GetRelationListResponseDto,
 } from "./response/search";
+import {
+  PatchNicknameRequestDto,
+  PatchProfileImageRequestDto,
+} from "./request/user";
 
 // API 요청을 보낼 서버의 기본 도메인 URL입니다.
 const DOMAIN = "http://localhost:4000";
@@ -87,7 +97,8 @@ const GET_BOARD_URL = (boardNumber: number | string) =>
 
 const GET_LATEST_BOARD_LIST_URL = () => `${API_DOMAIN}/board/latest-list`;
 const GET_TOP_3_BOARD_LIST_URL = () => `${API_DOMAIN}/board/top-3`;
-
+const GET_USER_BOARD_LIST_URL = (email: string) =>
+  `${API_DOMAIN}/board/user-board-list/${email}`;
 const INCREASE_VIEW_COUNT_URL = (boardNumber: number | string) =>
   `${API_DOMAIN}/board/${boardNumber}/increase-view-count`;
 const POST_BOARD_URL = () => `${API_DOMAIN}/board`;
@@ -165,6 +176,22 @@ export const getTop3BoardListRequest = async () => {
     .get(GET_TOP_3_BOARD_LIST_URL())
     .then((response) => {
       const responseBody: GetTop3BoardListResponseDto = response.data;
+
+      return responseBody;
+    })
+    .catch((error) => {
+      if (!error.response) return null;
+      const responseBody: ResponseDto = error.response.data;
+      return responseBody;
+    });
+  return result;
+};
+
+export const getUserBOardListRequest = async (email: string) => {
+  const result = await axios
+    .get(GET_USER_BOARD_LIST_URL(email))
+    .then((response) => {
+      const responseBody: GetUserBoardListResponseDto = response.data;
 
       return responseBody;
     })
@@ -358,8 +385,28 @@ export const getRelationListRequest = async (searchWord: string) => {
   return result;
 };
 
+const GET_USER_URL = (email: string) => `${API_DOMAIN}/user/${email}`;
+
 // 현재 로그인된 사용자 정보를 가져오는 엔드포인트 URL을 생성하는 함수입니다.
 const GET_SIGN_IN_USER_URL = () => `${API_DOMAIN}/user`;
+
+const PATCH_NICKNAME_URL = () => `${API_DOMAIN}/user/nickname`;
+const PATCH_PROFILE_IMAGE_URL = () => `${API_DOMAIN}/user/profile-image`;
+
+export const getUserRequest = async (email: string) => {
+  const result = await axios
+    .get(GET_USER_URL(email)) // 사용자 정보를 가져오는 엔드포인트로 GET 요청을 보냅니다.
+    .then((response) => {
+      const responseBody: GetUserResponseDto = response.data; // 응답 데이터를 GetSignInUserResponseDto로 변환합니다.
+      return responseBody;
+    })
+    .catch((error) => {
+      if (!error.response) return null; // 오류 응답이 없는 경우 null을 반환합니다.
+      const responseBody: ResponseDto = error.response.data; // 오류 응답 데이터를 ResponseDto로 변환합니다.
+      return responseBody;
+    });
+  return result; // 최종 결과를 반환합니다.
+};
 
 // 현재 로그인된 사용자 정보를 요청하는 함수입니다.
 export const getSignInUserRequest = async (accessToken: string) => {
@@ -367,6 +414,42 @@ export const getSignInUserRequest = async (accessToken: string) => {
     .get(GET_SIGN_IN_USER_URL(), authorization(accessToken)) // 사용자 정보를 가져오는 엔드포인트로 GET 요청을 보냅니다.
     .then((response) => {
       const responseBody: GetSignInUserResponseDto = response.data; // 응답 데이터를 GetSignInUserResponseDto로 변환합니다.
+      return responseBody;
+    })
+    .catch((error) => {
+      if (!error.response) return null; // 오류 응답이 없는 경우 null을 반환합니다.
+      const responseBody: ResponseDto = error.response.data; // 오류 응답 데이터를 ResponseDto로 변환합니다.
+      return responseBody;
+    });
+  return result; // 최종 결과를 반환합니다.
+};
+
+export const patchNicknameRequest = async (
+  requestBody: PatchNicknameRequestDto,
+  accessToken: string
+) => {
+  const result = await axios
+    .patch(PATCH_NICKNAME_URL(), requestBody, authorization(accessToken)) // 사용자 정보를 가져오는 엔드포인트로 GET 요청을 보냅니다.
+    .then((response) => {
+      const responseBody: PatchNicknameResponseDto = response.data; // 응답 데이터를 GetSignInUserResponseDto로 변환합니다.
+      return responseBody;
+    })
+    .catch((error) => {
+      if (!error.response) return null; // 오류 응답이 없는 경우 null을 반환합니다.
+      const responseBody: ResponseDto = error.response.data; // 오류 응답 데이터를 ResponseDto로 변환합니다.
+      return responseBody;
+    });
+  return result; // 최종 결과를 반환합니다.
+};
+
+export const patchProfileImageRequest = async (
+  requestBody: PatchProfileImageRequestDto,
+  accessToken: string
+) => {
+  const result = await axios
+    .patch(PATCH_PROFILE_IMAGE_URL(), requestBody, authorization(accessToken)) // 사용자 정보를 가져오는 엔드포인트로 GET 요청을 보냅니다.
+    .then((response) => {
+      const responseBody: PatchProfileImageResponseDto = response.data; // 응답 데이터를 GetSignInUserResponseDto로 변환합니다.
       return responseBody;
     })
     .catch((error) => {

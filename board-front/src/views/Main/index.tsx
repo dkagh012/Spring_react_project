@@ -19,6 +19,7 @@ import {
 } from "apis";
 import { usePagination } from "hooks";
 import { GetPopularListResponseDto } from "apis/response/search";
+import Chatting from "components/Chatting/Chatting";
 
 // 메인 컴포넌트
 export default function Main() {
@@ -49,6 +50,7 @@ export default function Main() {
 
     return (
       <div id="main-top-wrapper">
+        <Chatting />
         <div className="main-top-container">
           <div className="main-top-intro">
             {"Hoons board에서 \n 다양한 이야기를 나눠보세요"}

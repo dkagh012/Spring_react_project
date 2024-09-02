@@ -11,6 +11,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "axios": "^1.7.3",
+    "board-front": "file:",
     "dayjs": "^1.11.12",
     "net": "^1.0.2",
     "react": "^18.3.1",
@@ -25,6 +26,7 @@
     "web-vitals": "^2.1.4",
     "zustand": "^4.5.4"
   },
+  "proxy": "http://localhost:8080",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
